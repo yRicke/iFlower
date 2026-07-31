@@ -15,9 +15,16 @@
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
   <header class="site-header sticky-top">
     <nav class="navbar navbar-expand-lg" aria-label="Navegação principal">
-      <div class="container">
+      <div class="container navbar-shell">
         <a class="brand" href="{% url 'home' %}" aria-label="iFlower, página inicial"><span class="brand-mark">✿</span> iFlower <small>DEMO</small></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menu"><span class="navbar-toggler-icon"></span></button>
+        <div class="navbar-mobile-tools">
+          {% if user.is_authenticated %}
+            <a class="btn btn-icon cart-nav-button mobile-cart-button" href="{% url 'cart_detail' %}" aria-label="Carrinho com {{ cart_selected_count }} item(ns) selecionado(s)">🛍️<span class="cart-count">{{ cart_selected_count }}</span></a>
+          {% endif %}
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menu de navegação">
+            <span class="navbar-toggler-lines" aria-hidden="true"><i></i><i></i><i></i></span>
+          </button>
+        </div>
         <div class="collapse navbar-collapse" id="mainNav">
           <ul class="navbar-nav main-nav-links me-auto ms-lg-4">
             <li class="nav-item"><a class="nav-link" href="{% url 'product_list' %}">Presentes</a></li>
@@ -28,7 +35,7 @@
             {% if user.is_staff %}<a class="btn btn-soft" href="{% url 'staff_dashboard' %}">Gestão</a>{% elif user.is_authenticated and user.profile.role == 'vendor' %}<a class="btn btn-soft" href="{% url 'seller_dashboard' %}">Painel da loja</a>{% endif %}
             {% if user.is_authenticated %}
               <a class="btn btn-soft" href="{% url 'profile' %}">Minha conta</a>
-              <a class="btn btn-icon cart-nav-button" href="{% url 'cart_detail' %}" aria-label="Carrinho com {{ cart_selected_count }} item(ns) selecionado(s)">🛍️<span class="cart-count">{{ cart_selected_count }}</span></a>
+              <a class="btn btn-icon cart-nav-button desktop-cart-button" href="{% url 'cart_detail' %}" aria-label="Carrinho com {{ cart_selected_count }} item(ns) selecionado(s)">🛍️<span class="cart-count">{{ cart_selected_count }}</span></a>
               <form method="post" action="{% url 'logout' %}" class="d-inline">{% csrf_token %}<button class="btn btn-link nav-link d-inline" type="submit">Sair</button></form>
             {% else %}
               <a class="nav-link" href="{% url 'login' %}">Entrar</a><a class="btn btn-primary" href="{% url 'register' %}">Criar conta</a>

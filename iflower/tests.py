@@ -133,6 +133,14 @@ class IFlowerFlowTests(TestCase):
         response = self.client.get(reverse('home'))
         self.assertContains(response, 'src="/static/media/demo/flores.png"', html=False)
 
+    def test_home_exposes_mobile_navigation_and_scrollable_sections(self):
+        response = self.client.get(reverse('home'))
+        self.assertContains(response, 'class="navbar-mobile-tools"', html=False)
+        self.assertContains(response, 'class="navbar-toggler-lines"', html=False)
+        self.assertContains(response, 'home-category-grid', html=False)
+        self.assertContains(response, 'home-product-grid', html=False)
+        self.assertContains(response, 'home-store-grid', html=False)
+
     def test_password_reset_uses_development_email_backend(self):
         response = self.client.post(reverse('password_reset'), {'email': self.customer.email})
         self.assertRedirects(response, reverse('password_reset_done'))
