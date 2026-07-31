@@ -106,6 +106,17 @@ Nenhuma variável é obrigatória para a demonstração local. Em um ambiente qu
 $env:DJANGO_SECRET_KEY = 'gere-um-segredo-seguro'
 ```
 
+## Otimização das imagens de demonstração
+
+Para converter os PNGs de `media/` para WebP e atualizar as referências do banco de dados:
+
+```bash
+python manage.py convert_media_to_webp
+python manage.py convert_media_to_webp --apply --delete-original
+```
+
+O primeiro comando apenas simula a conversão. O segundo gera os WebPs, atualiza os campos de imagem e remove os PNGs originais após o sucesso.
+
 Não use a chave ou as credenciais demonstrativas em produção. Banco, `DEBUG`, hosts e deploy devem ser configurados para o ambiente antes de qualquer publicação.
 
 ## Usuários de demonstração

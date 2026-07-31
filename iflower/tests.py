@@ -3,6 +3,7 @@ from decimal import Decimal
 from hashlib import sha256
 from io import StringIO
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -13,6 +14,7 @@ from django.db import IntegrityError
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
+from PIL import Image
 
 from .forms import RegistrationForm, StoreForm
 from .models import (
@@ -131,7 +133,23 @@ class IFlowerFlowTests(TestCase):
     @override_settings(MEDIA_URL='/static/media/')
     def test_home_uses_configured_media_url(self):
         response = self.client.get(reverse('home'))
-        self.assertContains(response, 'src="/static/media/demo/flores.png"', html=False)
+        self.assertContains(response, 'src="/static/media/demo/flores.webp"', html=False)
+
+    def test_convert_media_to_webp_updates_file_and_database_reference(self):
+        with TemporaryDirectory() as temporary_media_root:
+            source = Path(temporary_media_root) / 'demo' / 'produto.png'
+            source.parent.mkdir(parents=True)
+            Image.new('RGB', (20, 20), color='pink').save(source, 'PNG')
+            self.product.image.name = 'demo/produto.png'
+            self.product.save(update_fields=['image'])
+
+            with override_settings(MEDIA_ROOT=temporary_media_root):
+                call_command('convert_media_to_webp', '--apply', '--delete-original', stdout=StringIO())
+
+            self.product.refresh_from_db()
+            self.assertEqual(self.product.image.name, 'demo/produto.webp')
+            self.assertTrue(source.with_suffix('.webp').exists())
+            self.assertFalse(source.exists())
 
     def test_home_exposes_mobile_navigation_and_scrollable_sections(self):
         response = self.client.get(reverse('home'))
