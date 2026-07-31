@@ -10,7 +10,7 @@ from django.core.exceptions import PermissionDenied, ValidationError
 from django.core import mail
 from django.core.management import call_command
 from django.db import IntegrityError
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
@@ -127,6 +127,11 @@ class IFlowerFlowTests(TestCase):
     def test_home_and_footer_link_to_public_seller_page(self):
         response = self.client.get(reverse('home'))
         self.assertContains(response, f'href="{reverse("sell_with_us")}"', count=2, html=False)
+
+    @override_settings(MEDIA_URL='/static/media/')
+    def test_home_uses_configured_media_url(self):
+        response = self.client.get(reverse('home'))
+        self.assertContains(response, 'src="/static/media/demo/flores.png"', html=False)
 
     def test_password_reset_uses_development_email_backend(self):
         response = self.client.post(reverse('password_reset'), {'email': self.customer.email})

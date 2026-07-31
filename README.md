@@ -89,6 +89,15 @@ python manage.py runserver
 
 Acesse `http://127.0.0.1:8000/`.
 
+## Deploy na Vercel
+
+O projeto está preparado para o runtime Python/Django da Vercel. O `vercel.json` executa migrações e atualiza o seed idempotente; a integração Django coleta os arquivos estáticos durante o build. Em produção, defina:
+
+- `DATABASE_URL`, fornecida por um PostgreSQL gerenciado como Neon;
+- `DJANGO_SECRET_KEY`, como variável sensível nos ambientes Production e Preview.
+
+Os assets demonstrativos versionados são servidos pelo WhiteNoise. Novos uploads feitos pelo painel do vendedor devem usar um storage persistente, como Vercel Blob, antes de uso fora desta demonstração.
+
 ### Variáveis de ambiente
 
 Nenhuma variável é obrigatória para a demonstração local. Em um ambiente que não seja exclusivamente de desenvolvimento, defina:

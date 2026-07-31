@@ -10,3 +10,7 @@ htmlcov/
 .browser-check/
 server.out.log
 server.err.log
+
+.vercel
+.vercel_python_packages/
+.env*
