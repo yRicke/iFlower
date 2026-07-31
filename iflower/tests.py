@@ -204,6 +204,10 @@ class IFlowerFlowTests(TestCase):
         self.assertEqual(order.payment.status, Order.PaymentStatus.APPROVED)
         self.assertEqual(order.status, Order.Status.ACCEPTED)
         self.assertEqual(list(order.history.values_list('status', flat=True)), [Order.Status.PENDING, Order.Status.ACCEPTED])
+        self.assertEqual(
+            order.history.get(status=Order.Status.ACCEPTED).description,
+            'Pedido confirmado automaticamente pela loja.',
+        )
         self.assertFalse(CartItem.objects.exists())
         self.product.refresh_from_db()
         self.assertEqual(self.product.stock, 3)

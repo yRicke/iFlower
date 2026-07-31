@@ -100,7 +100,7 @@ class Command(BaseCommand):
                 owner=users[key],
                 defaults={**data, 'phone': '(64) 3000-1000', 'city': 'Rio Verde', 'state': 'GO',
                           'address': 'Avenida das Flores, 100 — Centro', 'opening_hours': 'Seg–Sáb, 08h às 19h',
-                          # MVP: ativo para que os pedidos demonstrativos avancem sem espera.
+                          # Ativo nesta versão; revisar o padrão em versões futuras.
                           'auto_accept_orders': True,
                           'is_active': True, 'is_featured': True},
             )

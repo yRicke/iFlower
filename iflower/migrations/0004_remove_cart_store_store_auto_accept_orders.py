@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             name='auto_accept_orders',
             field=models.BooleanField(
                 default=True,
-                help_text='No MVP, aceita o pedido assim que o checkout é concluído.',
+                help_text='Aceita o pedido automaticamente assim que o checkout é concluído.',
                 verbose_name='confirmar pedidos automaticamente',
             ),
         ),

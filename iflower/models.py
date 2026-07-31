@@ -94,12 +94,12 @@ class Store(models.Model):
     review_count = models.PositiveIntegerField('quantidade de avaliações', default=0)
     is_active = models.BooleanField('ativa', default=True)
     is_featured = models.BooleanField('em destaque', default=False)
-    # MVP: a confirmação automática fica ativa por padrão apenas para agilizar a
-    # demonstração. Em versões futuras, revisar este padrão antes da produção.
+    # Nesta versão, a confirmação automática fica ativa por padrão. Em versões
+    # futuras, revisar este padrão antes da produção.
     auto_accept_orders = models.BooleanField(
         'confirmar pedidos automaticamente',
         default=True,
-        help_text='No MVP, aceita o pedido assim que o checkout é concluído.',
+        help_text='Aceita o pedido automaticamente assim que o checkout é concluído.',
     )
     created_at = models.DateTimeField('criada em', auto_now_add=True)
 

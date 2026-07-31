@@ -108,12 +108,12 @@ def checkout_cart(*, cart: Cart, customer, cleaned_data: dict) -> Order:
         responsible=customer,
     )
     if store.auto_accept_orders:
-        # MVP: confirmação imediata para a demonstração. Em versões futuras, a
-        # loja deve revisar o pedido antes de aceitá-lo ou habilitar esta opção.
+        # Nesta versão, a confirmação imediata vem habilitada. Em versões futuras,
+        # a loja deve revisar o pedido antes de aceitá-lo ou habilitar esta opção.
         StatusHistory.objects.create(
             order=order,
             status=Order.Status.ACCEPTED,
-            description='Pedido confirmado automaticamente pela loja para agilizar a demonstração do MVP.',
+            description='Pedido confirmado automaticamente pela loja.',
             responsible=store.owner,
         )
     cart.items.filter(pk__in=[item.pk for item in items]).delete()

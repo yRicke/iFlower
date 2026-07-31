@@ -18,7 +18,7 @@ Demonstrar uma aplicação web de marketplace completa, responsiva e segura, sem
 - perfil e endereços de entrega;
 - carrinho multi-loja agrupado por vendedor, seleção individual ou por loja e contador na navbar;
 - checkout atômico de uma loja por vez, preservando no carrinho os itens das demais lojas;
-- confirmação automática opcional por loja, ativa por padrão somente para agilizar o MVP;
+- confirmação automática opcional e configurável por loja;
 - preenchimento assistido de endereço por CEP e opção de exibir/ocultar senhas;
 - pedido com snapshot dos produtos e do endereço;
 - Pix, cartão e pagamento na entrega simulados, sem dados financeiros reais;
@@ -160,7 +160,7 @@ As quatro imagens em `media/demo/` foram geradas especificamente para este proje
 - entrega, rastreamento, horários, taxas e áreas atendidas são simulados;
 - o estoque é demonstrativo e não possui reserva temporária;
 - cada vendedor administra uma única loja;
-- a confirmação automática de pedidos vem ativa no MVP; antes de uma versão de produção, o padrão deve ser revisto para exigir confirmação da loja;
+- a confirmação automática de pedidos vem ativa por padrão nesta versão; antes da produção, o padrão deve ser revisto para exigir confirmação da loja;
 - não há cupons reais, geolocalização, notificações, mensageria ou integração externa;
 - Bootstrap é carregado por CDN; a lógica principal permanece funcional sem APIs externas;
 - o autocomplete usa o [ViaCEP](https://viacep.com.br/) após a digitação de um CEP válido; se o serviço estiver indisponível, todos os campos permanecem editáveis manualmente;
