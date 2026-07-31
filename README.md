@@ -110,6 +110,8 @@ Todos usam a senha `Demo123!`.
 | Vendedor Floratta | `floratta@iflower.local` |
 | Vendedor Encanto | `encanto@iflower.local` |
 | Vendedor Doce Afeto | `doceafeto@iflower.local` |
+| Vendedor Verde Vivo | `verdevivo@iflower.local` |
+| Vendedor Lume & Aroma | `lumearoma@iflower.local` |
 
 O seed pode ser executado várias vezes. Ele atualiza os registros conhecidos sem duplicar o conjunto demonstrativo.
 
@@ -151,9 +153,9 @@ Os testes verificam cadastro e login, perfis, propriedade de loja/produto, carri
 
 ## Dados e imagens
 
-As três lojas ficam em Rio Verde, Goiás, apenas para ambientação. Endereços e contatos não representam pessoas ou estabelecimentos reais.
+As cinco lojas ficam em Rio Verde, Goiás, apenas para ambientação. Endereços e contatos não representam pessoas ou estabelecimentos reais.
 
-As quatro imagens em `media/demo/` foram geradas especificamente para este projeto com a ferramenta integrada de geração de imagens da OpenAI. São assets locais, sem hotlink, texto, logotipos ou marcas de terceiros. Cada produto do seed recebe uma imagem compatível com sua categoria.
+As 21 imagens de produtos em `media/demo/products/` foram geradas especificamente para este projeto com a ferramenta integrada de geração de imagens da OpenAI. São assets locais, sem hotlink, texto, logotipos ou marcas de terceiros. Cada produto do seed recebe uma composição exclusiva e compatível com sua categoria.
 
 ## Limitações desta versão
 

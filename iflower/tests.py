@@ -1,9 +1,14 @@
 from datetime import timedelta
 from decimal import Decimal
+from hashlib import sha256
+from io import StringIO
+from pathlib import Path
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core import mail
+from django.core.management import call_command
 from django.db import IntegrityError
 from django.test import TestCase
 from django.urls import reverse
@@ -449,3 +454,24 @@ class IFlowerFlowTests(TestCase):
         event = StatusHistory.objects.create(order=order, status=order.status, description='Criado', responsible=self.customer)
         with self.assertRaises(ValidationError):
             event.delete()
+
+
+class SeedDemoTests(TestCase):
+    def test_seed_creates_five_stores_and_unique_product_images_idempotently(self):
+        output = StringIO()
+        call_command('seed_demo', stdout=output)
+        call_command('seed_demo', stdout=output)
+
+        self.assertEqual(Store.objects.count(), 5)
+        self.assertEqual(Product.objects.count(), 21)
+        self.assertTrue(Store.objects.filter(name='Verde Vivo Plantas').exists())
+        self.assertTrue(Store.objects.filter(name='Lume & Aroma').exists())
+
+        image_names = list(Product.objects.values_list('image', flat=True))
+        self.assertEqual(len(image_names), len(set(image_names)))
+        image_hashes = []
+        for image_name in image_names:
+            image_path = Path(settings.MEDIA_ROOT) / image_name
+            self.assertTrue(image_path.is_file())
+            image_hashes.append(sha256(image_path.read_bytes()).hexdigest())
+        self.assertEqual(len(image_hashes), len(set(image_hashes)))

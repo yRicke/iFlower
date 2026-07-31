@@ -60,12 +60,15 @@ class Command(BaseCommand):
             'floratta': self.upsert_user('floratta@iflower.local', 'Clara', role=Profile.Role.VENDOR),
             'encanto': self.upsert_user('encanto@iflower.local', 'Lucas', role=Profile.Role.VENDOR),
             'doceafeto': self.upsert_user('doceafeto@iflower.local', 'Sofia', role=Profile.Role.VENDOR),
+            'verdevivo': self.upsert_user('verdevivo@iflower.local', 'Helena', role=Profile.Role.VENDOR),
+            'lumearoma': self.upsert_user('lumearoma@iflower.local', 'Bianca', role=Profile.Role.VENDOR),
         }
 
     def create_categories(self):
         specs = [
             ('Buquês', '✿', 1), ('Arranjos', '❀', 2), ('Cestas', '☕', 3),
             ('Chocolates', '◆', 4), ('Pelúcias', '♡', 5), ('Personalizados', '✦', 6),
+            ('Plantas', '☘', 7), ('Bem-estar', '♨', 8),
         ]
         result = {}
         for name, icon, order in specs:
@@ -93,6 +96,20 @@ class Command(BaseCommand):
                 'cover': 'demo/cestas.png', 'logo': 'demo/cestas.png', 'email': 'contato@doceafeto.local',
                 'preparation_minutes': 60, 'minimum_order': Decimal('69.90'), 'default_delivery_fee': Decimal('11.90'),
             },
+            'verdevivo': {
+                'name': 'Verde Vivo Plantas',
+                'description': 'Plantas, terrários e composições botânicas para presentear com vida e personalidade.',
+                'cover': 'demo/products/terrario-sereno.png', 'logo': 'demo/products/kit-suculentas.png',
+                'email': 'contato@verdevivo.local', 'preparation_minutes': 40,
+                'minimum_order': Decimal('54.90'), 'default_delivery_fee': Decimal('8.90'),
+            },
+            'lumearoma': {
+                'name': 'Lume & Aroma',
+                'description': 'Presentes de bem-estar com velas, aromas e rituais preparados para desacelerar.',
+                'cover': 'demo/products/kit-spa-lavanda.png', 'logo': 'demo/products/vela-jardim-branco.png',
+                'email': 'contato@lumearoma.local', 'preparation_minutes': 35,
+                'minimum_order': Decimal('49.90'), 'default_delivery_fee': Decimal('7.50'),
+            },
         }
         stores = {}
         for key, data in specs.items():
@@ -110,25 +127,35 @@ class Command(BaseCommand):
     def create_products(self, stores, categories):
         specs = {
             'floratta': [
-                ('Buquê Romance', 'Buquês', 'Um clássico delicado com rosas e folhagens.', 'flores.png', '129.90', '109.90'),
-                ('Buquê de Girassóis', 'Buquês', 'Luz e alegria em uma composição vibrante.', 'flores.png', '94.90', None),
-                ('Caixa de Rosas e Chocolates', 'Chocolates', 'Rosas frescas e chocolates artesanais.', 'chocolates.png', '159.90', None),
-                ('Arranjo Encanto', 'Arranjos', 'Flores nobres em um arranjo contemporâneo.', 'flores.png', '119.90', None),
-                ('Buquê Flores do Campo', 'Buquês', 'Leve, colorido e cheio de personalidade.', 'flores.png', '89.90', None),
+                ('Buquê Romance', 'Buquês', 'Um clássico delicado com rosas e folhagens.', 'buque-romance.png', '129.90', '109.90'),
+                ('Buquê de Girassóis', 'Buquês', 'Luz e alegria em uma composição vibrante.', 'buque-girassois.png', '94.90', None),
+                ('Caixa de Rosas e Chocolates', 'Chocolates', 'Rosas frescas e chocolates artesanais.', 'caixa-rosas-chocolates.png', '159.90', None),
+                ('Arranjo Encanto', 'Arranjos', 'Flores nobres em um arranjo contemporâneo.', 'arranjo-encanto.png', '119.90', None),
+                ('Buquê Flores do Campo', 'Buquês', 'Leve, colorido e cheio de personalidade.', 'buque-flores-campo.png', '89.90', None),
             ],
             'encanto': [
-                ('Kit Amor Perfeito', 'Personalizados', 'Caneca, chocolates e carinho em uma caixa.', 'presentes.png', '139.90', '124.90'),
-                ('Urso com Chocolates', 'Pelúcias', 'Urso macio acompanhado de chocolates.', 'presentes.png', '99.90', None),
-                ('Box Feliz Aniversário', 'Personalizados', 'Uma seleção alegre para celebrar.', 'presentes.png', '149.90', None),
-                ('Caneca Personalizada', 'Personalizados', 'Caneca especial com embalagem para presente.', 'presentes.png', '59.90', None),
-                ('Kit Carinho', 'Chocolates', 'Pequenos detalhes para demonstrar afeto.', 'chocolates.png', '79.90', None),
+                ('Kit Amor Perfeito', 'Personalizados', 'Caneca, chocolates e carinho em uma caixa.', 'kit-amor-perfeito.png', '139.90', '124.90'),
+                ('Urso com Chocolates', 'Pelúcias', 'Urso macio acompanhado de chocolates.', 'urso-com-chocolates.png', '99.90', None),
+                ('Box Feliz Aniversário', 'Personalizados', 'Uma seleção alegre para celebrar.', 'box-feliz-aniversario.png', '149.90', None),
+                ('Caneca Personalizada', 'Personalizados', 'Caneca especial com embalagem para presente.', 'caneca-personalizada.png', '59.90', None),
+                ('Kit Carinho', 'Chocolates', 'Pequenos detalhes para demonstrar afeto.', 'kit-carinho.png', '79.90', None),
             ],
             'doceafeto': [
-                ('Cesta Café da Manhã', 'Cestas', 'Pães, frutas, bebidas e sabores para começar bem.', 'cestas.png', '149.90', None),
-                ('Cesta Premium', 'Cestas', 'Seleção completa com produtos artesanais.', 'cestas.png', '229.90', '209.90'),
-                ('Box de Chocolates', 'Chocolates', 'Chocolate artesanal em uma caixa elegante.', 'chocolates.png', '89.90', None),
-                ('Cesta Romântica', 'Cestas', 'Café, chocolates e flores para dois.', 'cestas.png', '189.90', None),
-                ('Cesta Celebração', 'Cestas', 'Uma cesta generosa para datas especiais.', 'cestas.png', '199.90', None),
+                ('Cesta Café da Manhã', 'Cestas', 'Pães, frutas, bebidas e sabores para começar bem.', 'cesta-cafe-manha.png', '149.90', None),
+                ('Cesta Premium', 'Cestas', 'Seleção completa com produtos artesanais.', 'cesta-premium.png', '229.90', '209.90'),
+                ('Box de Chocolates', 'Chocolates', 'Chocolate artesanal em uma caixa elegante.', 'box-chocolates.png', '89.90', None),
+                ('Cesta Romântica', 'Cestas', 'Café, chocolates e flores para dois.', 'cesta-romantica.png', '189.90', None),
+                ('Cesta Celebração', 'Cestas', 'Uma cesta generosa para datas especiais.', 'cesta-celebracao.png', '199.90', None),
+            ],
+            'verdevivo': [
+                ('Terrário Sereno', 'Plantas', 'Um pequeno jardim em vidro para trazer calma ao ambiente.', 'terrario-sereno.png', '119.90', '104.90'),
+                ('Orquídea Elegance', 'Plantas', 'Orquídea branca em vaso de cerâmica com acabamento sofisticado.', 'orquidea-elegance.png', '149.90', None),
+                ('Kit Suculentas', 'Plantas', 'Três suculentas em vasos geométricos para decorar e presentear.', 'kit-suculentas.png', '89.90', None),
+            ],
+            'lumearoma': [
+                ('Kit Spa Lavanda', 'Bem-estar', 'Um ritual completo de banho e relaxamento com lavanda.', 'kit-spa-lavanda.png', '139.90', '124.90'),
+                ('Vela Jardim Branco', 'Bem-estar', 'Vela artesanal de três pavios com aroma floral suave.', 'vela-jardim-branco.png', '84.90', None),
+                ('Caixa Chá & Aconchego', 'Bem-estar', 'Chás, mel e detalhes acolhedores para uma pausa especial.', 'caixa-cha-aconchego.png', '129.90', None),
             ],
         }
         result = {}
@@ -141,7 +168,7 @@ class Command(BaseCommand):
                         'category': categories[category], 'short_description': short,
                         'description': f'{short} Preparado com atenção aos detalhes e apresentado em embalagem especial. Produto inteiramente demonstrativo.',
                         'price': Decimal(price), 'promotional_price': Decimal(promo) if promo else None,
-                        'image': f'demo/{image}', 'is_available': True, 'is_featured': index < 3,
+                        'image': f'demo/products/{image}', 'is_available': True, 'is_featured': index < 3,
                         'stock': 12 + index * 3, 'preparation_minutes': store.preparation_minutes,
                     },
                 )
