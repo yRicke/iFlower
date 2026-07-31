@@ -120,6 +120,7 @@ O seed pode ser executado várias vezes. Ele atualiza os registros conhecidos se
 | Início | `/` |
 | Lojas | `/lojas/` |
 | Catálogo | `/presentes/` |
+| Quero vender | `/quero-vender/` |
 | Carrinho | `/carrinho/` |
 | Checkout | `/checkout/` |
 | Meus pedidos | `/pedidos/` |

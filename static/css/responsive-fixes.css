@@ -344,6 +344,265 @@ body {
   grid-template-columns: minmax(240px, 2fr) minmax(190px, 1.25fr) repeat(2, minmax(110px, .7fr)) minmax(150px, 1fr) auto;
 }
 
+.seller-landing-hero {
+  padding: 6rem 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 85% 12%, rgba(185, 75, 104, .18), transparent 30%),
+    linear-gradient(135deg, #fff 15%, #fff7f4 65%, #f4e7e5 100%);
+}
+
+.seller-landing-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(420px, .95fr);
+  gap: 5rem;
+  align-items: center;
+}
+
+.seller-landing-hero h1 {
+  max-width: 720px;
+  margin: .25rem 0 1.2rem;
+  font-size: clamp(3rem, 5.6vw, 5rem);
+}
+
+.seller-landing-hero h1 + p {
+  max-width: 680px;
+  color: var(--muted);
+  font-size: 1.16rem;
+}
+
+.seller-landing-actions,
+.seller-landing-trust {
+  display: flex;
+  gap: .8rem;
+  flex-wrap: wrap;
+}
+
+.seller-landing-actions {
+  margin-top: 2rem;
+}
+
+.seller-landing-trust {
+  gap: .8rem 1.4rem;
+  margin-top: 1.4rem;
+  color: var(--sage);
+  font-size: .86rem;
+  font-weight: 700;
+}
+
+.seller-panel-preview {
+  position: relative;
+  padding: 1.4rem;
+  background: rgba(255, 255, 255, .94);
+  border: 1px solid rgba(232, 226, 223, .9);
+  border-radius: 30px;
+  box-shadow: 0 28px 70px rgba(66, 40, 48, .16);
+  transform: rotate(1.5deg);
+}
+
+.seller-panel-preview::before {
+  position: absolute;
+  right: -35px;
+  bottom: -35px;
+  z-index: -1;
+  width: 150px;
+  height: 150px;
+  content: '';
+  background: var(--sage-light);
+  border-radius: 50%;
+}
+
+.seller-preview-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .25rem .2rem 1.1rem;
+  font-weight: 800;
+}
+
+.seller-preview-top i {
+  width: 10px;
+  height: 10px;
+  background: #35a56d;
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px #e5f5ec;
+}
+
+.seller-preview-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+.seller-preview-metrics article {
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem;
+  background: var(--cloud);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.seller-preview-metrics small,
+.seller-preview-metrics span {
+  color: var(--muted);
+  font-size: .72rem;
+}
+
+.seller-preview-metrics strong {
+  margin: .25rem 0;
+  font: 700 1.65rem Georgia, serif;
+}
+
+.seller-preview-orders {
+  display: grid;
+  gap: .55rem;
+  margin-top: .9rem;
+}
+
+.seller-preview-orders span {
+  height: 11px;
+  background: linear-gradient(90deg, #eadfe1 18%, var(--cloud) 18% 100%);
+  border-radius: 10px;
+}
+
+.seller-heading-narrow {
+  max-width: 760px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.seller-heading-narrow p {
+  color: var(--muted);
+}
+
+.seller-benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.seller-benefit-grid article {
+  padding: 2rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+}
+
+.seller-benefit-grid article:hover {
+  border-color: #dfc7ce;
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+}
+
+.seller-benefit-grid article > span {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 1.25rem;
+  color: var(--rose-dark);
+  font-size: 1.55rem;
+  background: var(--rose-light);
+  border-radius: 17px;
+  place-items: center;
+}
+
+.seller-benefit-grid h3 {
+  margin-bottom: .7rem;
+}
+
+.seller-benefit-grid p,
+.seller-process-copy p,
+.seller-process-list p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.seller-process-layout {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: 5rem;
+  align-items: center;
+}
+
+.seller-process-copy h2 {
+  margin-bottom: 1rem;
+}
+
+.seller-process-copy a {
+  display: inline-block;
+  margin-top: 1.3rem;
+  font-weight: 800;
+}
+
+.seller-process-list {
+  display: grid;
+  gap: .8rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.seller-process-list li {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 1rem;
+  padding: 1.35rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.seller-process-list li > span {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  color: var(--rose-dark);
+  font-weight: 800;
+  background: var(--rose-light);
+  border-radius: 50%;
+  place-items: center;
+}
+
+.seller-process-list h3 {
+  margin: 0 0 .25rem;
+}
+
+.seller-access-section {
+  padding-top: 1rem;
+}
+
+.seller-access-card {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3rem;
+  color: #fff;
+  background: linear-gradient(125deg, #663441, #a44660);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+}
+
+.seller-access-card h2 {
+  margin: .2rem 0 .65rem;
+}
+
+.seller-access-card p {
+  max-width: 680px;
+  margin: 0;
+  color: #f2dfe4;
+}
+
+.seller-access-card .btn {
+  flex-shrink: 0;
+}
+
+#como-funciona {
+  scroll-margin-top: 90px;
+}
+
 @media (max-width: 1199px) {
   .filter-products {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -351,6 +610,11 @@ body {
 
   .filter-products > :first-child {
     grid-column: span 2;
+  }
+
+  .seller-landing-hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(360px, .8fr);
+    gap: 2.5rem;
   }
 }
 
@@ -405,5 +669,41 @@ body {
 
   .cart-product-copy {
     min-width: calc(100% - 140px);
+  }
+
+  .seller-landing-hero {
+    padding: 4rem 0;
+  }
+
+  .seller-landing-hero-grid,
+  .seller-process-layout,
+  .seller-benefit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .seller-landing-hero-grid,
+  .seller-process-layout {
+    gap: 2.5rem;
+  }
+
+  .seller-panel-preview {
+    transform: none;
+  }
+
+  .seller-access-card {
+    align-items: flex-start;
+    padding: 2rem;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 420px) {
+  .seller-landing-actions .btn,
+  .seller-access-card .btn {
+    width: 100%;
+  }
+
+  .seller-preview-metrics {
+    grid-template-columns: 1fr;
   }
 }

@@ -8,6 +8,7 @@ urlpatterns = [
     path('lojas/', views.store_list, name='store_list'),
     path('lojas/<slug:slug>/', views.store_detail, name='store_detail'),
     path('presentes/', views.product_list, name='product_list'),
+    path('quero-vender/', views.sell_with_us, name='sell_with_us'),
     path('lojas/<slug:store_slug>/produtos/<slug:product_slug>/', views.product_detail, name='product_detail'),
     path('conta/criar/', views.register, name='register'),
     path('conta/entrar/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),

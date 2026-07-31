@@ -95,6 +95,10 @@ def product_detail(request, store_slug, product_slug):
     return render(request, 'iflower/product_detail.html', {'product': product, 'related': related})
 
 
+def sell_with_us(request):
+    return render(request, 'iflower/sell_with_us.html')
+
+
 def register(request):
     if request.user.is_authenticated:
         return redirect('post_login')

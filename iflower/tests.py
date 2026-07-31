@@ -105,6 +105,24 @@ class IFlowerFlowTests(TestCase):
             response = self.client.get(reverse(name))
             self.assertEqual(response.status_code, 302, name)
 
+    def test_sell_with_us_page_is_public_and_separate_from_vendor_dashboard(self):
+        response = self.client.get(reverse('sell_with_us'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Sua loja mais perto de quem quer presentear.')
+        self.assertContains(response, f'{reverse("login")}?next={reverse("seller_dashboard")}')
+
+        self.client.force_login(self.customer)
+        self.assertEqual(self.client.get(reverse('sell_with_us')).status_code, 200)
+
+        self.client.force_login(self.vendor)
+        response = self.client.get(reverse('sell_with_us'))
+        self.assertContains(response, 'Acessar painel da loja')
+        self.assertContains(response, f'href="{reverse("seller_dashboard")}"', html=False)
+
+    def test_home_and_footer_link_to_public_seller_page(self):
+        response = self.client.get(reverse('home'))
+        self.assertContains(response, f'href="{reverse("sell_with_us")}"', count=2, html=False)
+
     def test_password_reset_uses_development_email_backend(self):
         response = self.client.post(reverse('password_reset'), {'email': self.customer.email})
         self.assertRedirects(response, reverse('password_reset_done'))

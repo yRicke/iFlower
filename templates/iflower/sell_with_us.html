@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Venda no iFlower{% endblock %}
+{% block meta_description %}Conheça as ferramentas do iFlower para lojas de flores, cestas e presentes.{% endblock %}
+{% block content %}
+<section class="seller-landing-hero">
+  <div class="container seller-landing-hero-grid">
+    <div>
+      <span class="eyebrow">Venda no iFlower</span>
+      <h1>Sua loja mais perto de quem quer presentear.</h1>
+      <p>Apresente seu catálogo, receba pedidos e acompanhe a operação em um único painel pensado para floriculturas e lojas de presentes.</p>
+      <div class="seller-landing-actions">
+        {% if user.is_authenticated and user.profile.role == 'vendor' %}
+          <a class="btn btn-primary btn-lg" href="{% url 'seller_dashboard' %}">Acessar painel da loja</a>
+        {% else %}
+          <a class="btn btn-primary btn-lg" href="{% url 'login' %}?next={% url 'seller_dashboard' %}">Entrar como vendedor</a>
+        {% endif %}
+        <a class="btn btn-outline-dark btn-lg" href="#como-funciona">Como funciona</a>
+      </div>
+      <div class="seller-landing-trust">
+        <span>✓ Catálogo organizado</span>
+        <span>✓ Gestão de pedidos</span>
+        <span>✓ Indicadores da loja</span>
+      </div>
+    </div>
+    <aside class="seller-panel-preview" aria-label="Prévia do painel do vendedor">
+      <div class="seller-preview-top"><span>Painel da loja</span><i></i></div>
+      <div class="seller-preview-metrics">
+        <article><small>Pedidos hoje</small><strong>12</strong><span>novos pedidos</span></article>
+        <article><small>Em preparação</small><strong>5</strong><span>em andamento</span></article>
+        <article><small>Produtos ativos</small><strong>28</strong><span>no catálogo</span></article>
+        <article><small>Avaliação</small><strong>4,9 ★</strong><span>média da loja</span></article>
+      </div>
+      <div class="seller-preview-orders"><span></span><span></span><span></span></div>
+    </aside>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="text-center section-heading-center seller-heading-narrow">
+      <span class="eyebrow">Uma operação mais simples</span>
+      <h2>Ferramentas para cuidar do negócio e dos clientes.</h2>
+      <p>Do primeiro produto cadastrado ao acompanhamento da entrega, cada etapa fica centralizada.</p>
+    </div>
+    <div class="seller-benefit-grid">
+      <article><span aria-hidden="true">✿</span><h3>Catálogo com identidade</h3><p>Cadastre produtos, imagens, preços, estoque e opções de personalização para cada presente.</p></article>
+      <article><span aria-hidden="true">▤</span><h3>Pedidos organizados</h3><p>Acompanhe os pedidos recebidos e avance cada etapa com um histórico claro para a loja e o cliente.</p></article>
+      <article><span aria-hidden="true">↗</span><h3>Visão do desempenho</h3><p>Consulte volume de pedidos, faturamento, ticket médio, produtos ativos e avaliações em um só lugar.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-tint" id="como-funciona">
+  <div class="container seller-process-layout">
+    <div class="seller-process-copy">
+      <span class="eyebrow">Como funciona</span>
+      <h2>Comece com uma vitrine pronta para receber pedidos.</h2>
+      <p>Após a ativação da conta de vendedor, você configura a loja e administra toda a experiência pelo painel.</p>
+      <a href="{% url 'store_list' %}">Conhecer lojas parceiras <span aria-hidden="true">→</span></a>
+    </div>
+    <ol class="seller-process-list">
+      <li><span>01</span><div><h3>Configure sua loja</h3><p>Apresente a marca, horários, taxa de entrega e regiões atendidas.</p></div></li>
+      <li><span>02</span><div><h3>Publique o catálogo</h3><p>Organize produtos, valores, estoque e detalhes de personalização.</p></div></li>
+      <li><span>03</span><div><h3>Gerencie as vendas</h3><p>Receba pedidos, acompanhe indicadores e mantenha os clientes informados.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section seller-access-section">
+  <div class="container seller-access-card">
+    <div>
+      <span class="eyebrow light">Área do parceiro</span>
+      <h2>Já possui uma loja no iFlower?</h2>
+      <p>Entre com sua conta de vendedor para acessar pedidos, produtos e configurações.</p>
+    </div>
+    {% if user.is_authenticated and user.profile.role == 'vendor' %}
+      <a class="btn btn-light btn-lg" href="{% url 'seller_dashboard' %}">Ir para o painel</a>
+    {% else %}
+      <a class="btn btn-light btn-lg" href="{% url 'login' %}?next={% url 'seller_dashboard' %}">Acessar como vendedor</a>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
