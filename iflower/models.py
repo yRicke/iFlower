@@ -6,7 +6,7 @@ from uuid import uuid4
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator, MaxValueValidator, MinValueValidator
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone
 from django.utils.text import slugify
 
@@ -326,12 +326,24 @@ class Order(models.Model):
         ordering = ['-created_at']
 
     def save(self, *args, **kwargs):
-        if not self.public_code:
+        if self.public_code or not self._state.adding:
+            super().save(*args, **kwargs)
+            return
+
+        # O id do banco é concorrente e globalmente único. O código temporário
+        # permite obtê-lo antes de montar o identificador público definitivo.
+        self.public_code = f'TMP-{uuid4().hex[:16]}'
+        with transaction.atomic():
+            super().save(*args, **kwargs)
             year = timezone.localdate().year
-            last = Order.objects.filter(public_code__startswith=f'IFL-{year}-').order_by('-public_code').first()
-            sequence = int(last.public_code.rsplit('-', 1)[-1]) + 1 if last else 1
-            self.public_code = f'IFL-{year}-{sequence:06d}'
-        super().save(*args, **kwargs)
+            public_code = f'IFL-{year}-{self.pk:06d}'
+
+            # Protege bancos antigos que possam já ter recebido manualmente o
+            # mesmo código baseado no id.
+            while Order.objects.exclude(pk=self.pk).filter(public_code=public_code).exists():
+                public_code = f'IFL-{year}-{uuid4().hex[:8].upper()}'
+            Order.objects.filter(pk=self.pk).update(public_code=public_code)
+        self.public_code = public_code
 
     @property
     def can_advance(self):

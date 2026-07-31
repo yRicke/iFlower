@@ -208,6 +208,24 @@ class IFlowerFlowTests(TestCase):
         self.product.refresh_from_db()
         self.assertEqual(self.product.stock, 3)
 
+    def test_order_public_code_does_not_collide_with_mixed_number_padding(self):
+        first = self.make_order()
+        Order.objects.filter(pk=first.pk).update(public_code='IFL-2026-90007')
+        second = self.make_order()
+        Order.objects.filter(pk=second.pk).update(public_code='IFL-2026-090008')
+        self.add_item(quantity=1)
+        self.client.force_login(self.customer)
+        data = self.checkout_data()
+        data['address'] = self.address.pk
+        data['delivery_date'] = data['delivery_date'].isoformat()
+
+        response = self.client.post(reverse('checkout'), data)
+        order = Order.objects.exclude(pk__in=[first.pk, second.pk]).get()
+
+        self.assertRedirects(response, reverse('order_success', args=[order.public_code]))
+        self.assertEqual(order.public_code, f'IFL-{timezone.localdate().year}-{order.pk:06d}')
+        self.assertEqual(Order.objects.values('public_code').distinct().count(), 3)
+
     def test_checkout_processes_only_selected_items_and_keeps_the_rest(self):
         selected = self.add_item(quantity=1)
         unselected = CartItem.objects.create(
