@@ -352,6 +352,28 @@ class IFlowerFlowTests(TestCase):
         response = self.client.get(reverse('seller_product_edit', args=[self.other_product.id]))
         self.assertEqual(response.status_code, 404)
 
+    def test_seller_dashboard_formats_revenue_with_two_decimal_places(self):
+        self.make_order(status=Order.Status.DELIVERED)
+        self.client.force_login(self.vendor)
+        response = self.client.get(reverse('seller_dashboard'))
+        self.assertContains(response, 'R$ 110,00')
+        self.assertNotContains(response, '110,000000')
+
+    def test_new_product_page_has_back_button_and_seller_navigation(self):
+        self.client.force_login(self.vendor)
+        response = self.client.get(reverse('seller_product_create'))
+        self.assertContains(response, 'Voltar para produtos')
+        self.assertContains(response, f'href="{reverse("seller_product_list")}"', html=False)
+        self.assertContains(response, 'Navegação do vendedor')
+
+    def test_store_page_uses_standard_seller_layout(self):
+        self.client.force_login(self.vendor)
+        response = self.client.get(reverse('seller_store_edit'))
+        self.assertContains(response, 'class="dashboard-head"', html=False)
+        self.assertContains(response, 'Navegação do vendedor')
+        self.assertContains(response, 'Informações públicas')
+        self.assertContains(response, f'href="{reverse("store_detail", args=[self.store.slug])}"', html=False)
+
     def test_vendor_creates_product_only_in_own_store(self):
         self.client.force_login(self.vendor)
         response = self.client.post(reverse('seller_product_create'), {

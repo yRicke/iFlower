@@ -420,7 +420,14 @@ def seller_product_form(request, pk=None):
         item.save()
         messages.success(request, 'Produto salvo.')
         return redirect('seller_product_list')
-    return render(request, 'iflower/seller/form.html', {'form': form, 'title': 'Editar produto' if pk else 'Novo produto'})
+    return render(request, 'iflower/seller/form.html', {
+        'form': form,
+        'title': 'Editar produto' if pk else 'Novo produto',
+        'subtitle': 'Atualize as informações do catálogo.' if pk else 'Cadastre um novo item no catálogo da sua loja.',
+        'seller_section': 'products',
+        'back_url': 'seller_product_list',
+        'back_label': 'Voltar para produtos',
+    })
 
 
 @vendor_required
@@ -440,7 +447,12 @@ def seller_store_edit(request):
         form.save()
         messages.success(request, 'Dados da loja atualizados.')
         return redirect('seller_store_edit')
-    return render(request, 'iflower/seller/store_form.html', {'form': form, 'title': 'Minha loja', 'areas': request.user.store.service_areas.all()})
+    return render(request, 'iflower/seller/store_form.html', {
+        'form': form,
+        'title': 'Minha loja',
+        'store': request.user.store,
+        'areas': request.user.store.service_areas.all(),
+    })
 
 
 @vendor_required
@@ -453,7 +465,14 @@ def seller_area_form(request, pk=None):
         item.save()
         messages.success(request, 'Área de atendimento salva.')
         return redirect('seller_store_edit')
-    return render(request, 'iflower/seller/form.html', {'form': form, 'title': 'Editar área' if pk else 'Nova área de atendimento'})
+    return render(request, 'iflower/seller/form.html', {
+        'form': form,
+        'title': 'Editar área' if pk else 'Nova área de atendimento',
+        'subtitle': 'Defina a região atendida e a taxa adicional de entrega.',
+        'seller_section': 'store',
+        'back_url': 'seller_store_edit',
+        'back_label': 'Voltar para minha loja',
+    })
 
 
 @vendor_required

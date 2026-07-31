@@ -603,6 +603,73 @@ body {
   scroll-margin-top: 90px;
 }
 
+.seller-editor-panel,
+.seller-store-panel,
+.seller-area-panel {
+  box-shadow: 0 8px 28px rgba(66, 40, 48, .04);
+}
+
+.seller-editor-panel {
+  max-width: 960px;
+}
+
+.form-grid.seller-editor-panel > div:not(.full),
+.form-grid.seller-store-form > div:not(.full) {
+  grid-column: auto;
+}
+
+.seller-editor-panel > div.full,
+.seller-store-form > div.full {
+  grid-column: 1 / -1;
+}
+
+.seller-form-actions {
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+  justify-content: flex-end;
+  padding-top: .5rem;
+  border-top: 1px solid var(--line);
+}
+
+.seller-store-form {
+  margin-top: 1.25rem;
+}
+
+.seller-panel-heading {
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.seller-panel-heading h2 {
+  margin: 0;
+}
+
+.seller-panel-heading > small {
+  max-width: 290px;
+  color: var(--muted);
+  text-align: right;
+}
+
+.seller-area-row {
+  min-height: 74px;
+}
+
+.seller-area-actions {
+  display: flex;
+  gap: .35rem;
+  align-items: center;
+}
+
+.seller-area-actions form {
+  margin: 0;
+}
+
+.seller-area-actions .btn-link {
+  padding: .35rem .5rem;
+}
+
 @media (max-width: 1199px) {
   .filter-products {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -695,6 +762,36 @@ body {
     padding: 2rem;
     flex-direction: column;
   }
+
+  .form-grid.seller-editor-panel > div:not(.full),
+  .form-grid.seller-store-form > div:not(.full) {
+    grid-column: 1 / -1;
+  }
+
+  .dashboard-head {
+    flex-direction: column;
+  }
+
+  .dashboard-actions {
+    width: 100%;
+  }
+
+  .seller-panel-heading {
+    align-items: flex-start;
+  }
+
+  .seller-panel-heading > small {
+    text-align: left;
+  }
+
+  .seller-area-row {
+    flex-wrap: wrap;
+  }
+
+  .seller-area-actions {
+    width: 100%;
+    padding-left: 2.4rem;
+  }
 }
 
 @media (max-width: 420px) {
@@ -705,5 +802,14 @@ body {
 
   .seller-preview-metrics {
     grid-template-columns: 1fr;
+  }
+
+  .seller-form-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .seller-form-actions .btn {
+    width: 100%;
   }
 }

@@ -1,1 +1,43 @@
-{% extends 'base.html' %}{% block title %}{{ title }}{% endblock %}{% block content %}<section class="dashboard-page"><div class="container form-container"><span class="eyebrow">Painel do vendedor</span><h1>{{ title }}</h1><form method="post" enctype="multipart/form-data" class="form-grid panel mt-4">{% csrf_token %}{{ form.non_field_errors }}{% for field in form %}<div class="{% if field.name == 'description' %}full{% endif %}">{% if field.field.widget.input_type == 'checkbox' %}<div class="form-check">{{ field }}<label for="{{ field.id_for_label }}">{{ field.label }}</label></div>{% else %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% endif %}{% for error in field.errors %}<small class="text-danger d-block">{{ error }}</small>{% endfor %}</div>{% endfor %}<button class="btn btn-primary btn-lg">Salvar</button></form></div></section>{% endblock %}
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<section class="dashboard-page">
+  <div class="container">
+    <div class="dashboard-head">
+      <div>
+        <span class="eyebrow">Painel do vendedor</span>
+        <h1>{{ title }}</h1>
+        {% if subtitle %}<p>{{ subtitle }}</p>{% endif %}
+      </div>
+      <div class="dashboard-actions">
+        <a class="btn btn-soft" href="{% url back_url %}"><span aria-hidden="true">←</span> {{ back_label }}</a>
+      </div>
+    </div>
+    <nav class="subnav" aria-label="Navegação do vendedor">
+      <a href="{% url 'seller_dashboard' %}">Visão geral</a>
+      <a href="{% url 'seller_order_list' %}">Pedidos</a>
+      <a class="{% if seller_section == 'products' %}active{% endif %}" href="{% url 'seller_product_list' %}">Produtos</a>
+      <a class="{% if seller_section == 'store' %}active{% endif %}" href="{% url 'seller_store_edit' %}">Minha loja</a>
+    </nav>
+    <form method="post" enctype="multipart/form-data" class="form-grid panel seller-editor-panel">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <div class="{% if field.name == 'description' %}full{% endif %}">
+          {% if field.field.widget.input_type == 'checkbox' %}
+            <div class="form-check">{{ field }}<label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label></div>
+          {% else %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}
+          {% endif %}
+          {% if field.help_text %}<small class="form-help">{{ field.help_text|safe }}</small>{% endif %}
+          {% for error in field.errors %}<small class="text-danger d-block">{{ error }}</small>{% endfor %}
+        </div>
+      {% endfor %}
+      <div class="seller-form-actions full">
+        <a class="btn btn-soft" href="{% url back_url %}">Cancelar</a>
+        <button class="btn btn-primary btn-lg" type="submit">Salvar</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
