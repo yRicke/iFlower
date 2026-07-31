@@ -1,0 +1,6 @@
+<aside class="account-nav" aria-label="Navegação da conta">
+  <div class="account-nav-heading"><span>Minha conta</span><strong>{{ user.first_name|default:user.username }}</strong></div>
+  <a class="{% if account_section == 'profile' %}active{% endif %}" href="{% url 'profile' %}"><span>◉</span> Dados pessoais</a>
+  <a class="{% if account_section == 'addresses' %}active{% endif %}" href="{% url 'address_list' %}"><span>⌂</span> Endereços</a>
+  <a class="{% if account_section == 'orders' %}active{% endif %}" href="{% url 'order_list' %}"><span>□</span> Meus pedidos</a>
+</aside>

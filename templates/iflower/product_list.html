@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Presentes{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="container"><span class="eyebrow">Catálogo iFlower</span><h1>Presentes pensados para emocionar</h1><p>Flores, cestas e detalhes para tornar o dia inesquecível.</p></div></section>
+<section class="section"><div class="container">
+  <form class="filter-bar filter-products" method="get">
+    <input class="form-control" name="q" value="{{ request.GET.q }}" placeholder="Buscar presente ou loja" aria-label="Buscar presente ou loja">
+    <select class="form-select" name="category" aria-label="Filtrar por categoria"><option value="">Todas as categorias</option>{% for category in categories %}<option value="{{ category.slug }}" {% if request.GET.category == category.slug %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select>
+    <input class="form-control" type="number" min="0" name="min_price" value="{{ request.GET.min_price }}" placeholder="Preço mín." aria-label="Preço mínimo">
+    <input class="form-control" type="number" min="0" name="max_price" value="{{ request.GET.max_price }}" placeholder="Preço máx." aria-label="Preço máximo">
+    <select class="form-select" name="order" aria-label="Ordenar produtos"><option value="">Destaques</option><option value="price" {% if request.GET.order == 'price' %}selected{% endif %}>Menor preço</option><option value="-price" {% if request.GET.order == '-price' %}selected{% endif %}>Maior preço</option><option value="new" {% if request.GET.order == 'new' %}selected{% endif %}>Novidades</option></select>
+    <button class="btn btn-primary">Filtrar</button>
+  </form>
+  <div class="results-label">{{ page_obj.paginator.count }} opção{{ page_obj.paginator.count|pluralize:"ões" }}</div>
+  <div class="product-grid">{% for product in page_obj %}{% include 'iflower/partials/product_card.html' %}{% empty %}<div class="empty-state"><span>⌕</span><h2>Nenhum presente encontrado</h2><p>Tente outros filtros ou termos de busca.</p></div>{% endfor %}</div>
+  {% include 'iflower/partials/pagination.html' %}
+</div></section>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Carrinho{% endblock %}
+{% block content %}
+<section class="section cart-page">
+  <div class="container">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Sua seleção</span>
+        <h1>Carrinho</h1>
+        <p>Seus produtos estão separados por loja. Você finaliza uma loja por vez.</p>
+      </div>
+    </div>
+    {% if cart_groups %}
+      <div class="checkout-layout">
+        <div class="cart-store-list">
+          {% for group in cart_groups %}
+            <section class="cart-store-group{% if group.selected_lines %} is-active{% endif %}">
+              <header class="cart-store-header">
+                <form method="post" action="{% url 'cart_store_toggle' group.store.id %}" class="cart-store-select-form">
+                  {% csrf_token %}
+                  <input type="hidden" name="selected" value="0">
+                  <input
+                    class="form-check-input cart-select-checkbox"
+                    type="checkbox"
+                    name="selected"
+                    value="1"
+                    id="store-{{ group.store.id }}"
+                    {% if group.all_selected %}checked{% endif %}
+                    data-cart-store-select
+                    data-selected-lines="{{ group.selected_lines }}"
+                    data-total-lines="{{ group.line_count }}"
+                    aria-label="Selecionar todos os produtos de {{ group.store.name }}"
+                  >
+                </form>
+                <label for="store-{{ group.store.id }}">Produtos de <strong>{{ group.store.name }}</strong></label>
+                <a href="{% url 'store_detail' group.store.slug %}" aria-label="Visitar {{ group.store.name }}">Ver loja <span aria-hidden="true">›</span></a>
+              </header>
+              <div class="cart-store-items">
+                {% for item in group.items %}
+                  <article class="cart-item{% if not item.is_selected %} cart-item-muted{% endif %}">
+                    <form method="post" action="{% url 'cart_update' item.id %}" class="cart-select-form">
+                      {% csrf_token %}
+                      <input type="hidden" name="action" value="toggle">
+                      <input type="hidden" name="selected" value="0">
+                      <input class="form-check-input cart-select-checkbox" type="checkbox" name="selected" value="1" id="select-{{ item.id }}" {% if item.is_selected %}checked{% endif %} data-cart-select aria-label="Selecionar {{ item.product.name }} para checkout">
+                    </form>
+                    <div class="cart-product-image">
+                      {% if item.product.image %}<img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">{% else %}<span aria-hidden="true">✿</span>{% endif %}
+                    </div>
+                    <div class="grow cart-product-copy">
+                      <label class="cart-select-label" for="select-{{ item.id }}">{% if item.is_selected %}Selecionado para checkout{% else %}Selecionar este produto{% endif %}</label>
+                      <span class="eyebrow">{{ item.product.category.name }}</span>
+                      <h2>{{ item.product.name }}</h2>
+                      {% if item.selected_customizations %}<ul class="compact-list">{% for key,value in item.selected_customizations.items %}<li>{{ key }}: {{ value }}</li>{% endfor %}</ul>{% endif %}
+                      {% if item.note %}<small>Observação: {{ item.note }}</small>{% endif %}
+                    </div>
+                    <form method="post" action="{% url 'cart_update' item.id %}" class="cart-controls">
+                      {% csrf_token %}
+                      <label for="qty-{{ item.id }}">Qtd.</label>
+                      <input id="qty-{{ item.id }}" class="form-control" type="number" name="quantity" min="1" max="{{ item.product.stock }}" value="{{ item.quantity }}">
+                      <button class="btn btn-soft">Atualizar</button>
+                      <button class="btn btn-link text-danger" name="action" value="remove">Remover</button>
+                    </form>
+                    <strong class="item-total">R$ {{ item.subtotal }}</strong>
+                  </article>
+                {% endfor %}
+              </div>
+              <footer class="cart-store-footer">
+                <div><span>Entrega</span><strong>A partir de R$ {{ group.store.default_delivery_fee }}</strong></div>
+                <small>A taxa final depende do endereço informado no checkout.</small>
+                <a href="{% url 'store_detail' group.store.slug %}">Adicionar produtos desta loja <span aria-hidden="true">›</span></a>
+              </footer>
+            </section>
+          {% endfor %}
+        </div>
+        <aside class="order-summary">
+          <h2>Resumo selecionado</h2>
+          {% if selected_group %}
+            <span class="summary-store">{{ selected_group.store.name }}</span>
+            <div><span>{{ selected_group.selected_count }} item(ns)</span><strong>R$ {{ selected_group.selected_subtotal }}</strong></div>
+            <div><span>Taxa de entrega</span><small>Calculada no checkout</small></div>
+            <hr>
+            <a class="btn btn-primary btn-lg w-100" href="{% url 'checkout' %}">Comprar desta loja</a>
+            <a class="text-center d-block mt-3" href="{% url 'store_detail' selected_group.store.slug %}">Adicionar mais itens</a>
+          {% else %}
+            <p>Selecione um produto ou uma loja para continuar.</p>
+            <button class="btn btn-primary btn-lg w-100" disabled>Selecione uma loja</button>
+          {% endif %}
+          {% if cart_groups|length > 1 %}<p class="cart-checkout-note">Os produtos das outras lojas continuarão salvos depois deste pedido.</p>{% endif %}
+        </aside>
+      </div>
+    {% else %}
+      <div class="empty-state"><span>🛍️</span><h2>Seu carrinho está vazio</h2><p>Encontre um presente especial para começar.</p><a class="btn btn-primary" href="{% url 'product_list' %}">Explorar presentes</a></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

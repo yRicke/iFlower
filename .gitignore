@@ -1,0 +1,12 @@
+venv/
+db.sqlite3
+__pycache__/
+*.py[cod]
+.env
+staticfiles/
+*.log
+.coverage
+htmlcov/
+.browser-check/
+server.out.log
+server.err.log

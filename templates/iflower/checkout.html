@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<section class="section"><div class="container">
+  <div class="section-heading"><div><span class="eyebrow">Última etapa</span><h1>Prepare a surpresa</h1><p>Confira os dados antes de criar o pedido demonstrativo.</p></div></div>
+  <div class="demo-notice"><span>ⓘ</span><div><strong>Ambiente de demonstração</strong><p>O pagamento e a entrega são simulados. Nunca informe dados reais de cartão.</p></div></div>
+  <form method="post" class="checkout-layout">{% csrf_token %}
+    <div class="panel checkout-form"><h2>Entrega e destinatário</h2>{{ form.non_field_errors }}<div class="form-grid">
+      {% for field in form %}<div class="{% if field.name == 'card_message' or field.name == 'notes' %}full{% endif %}">{% if field.field.widget.input_type == 'checkbox' %}<div class="form-check">{{ field }}<label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label></div>{% else %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% endif %}{% for error in field.errors %}<small class="text-danger d-block">{{ error }}</small>{% endfor %}</div>{% endfor %}
+    </div></div>
+    <aside class="order-summary"><span class="eyebrow">{{ checkout_store.name }}</span><h2>Resumo do pedido</h2>
+      {% for item in selected_items %}<div class="summary-item"><span>{{ item.quantity }}× {{ item.product.name }}</span><strong>R$ {{ item.subtotal }}</strong></div>{% endfor %}
+      <hr><div><span>Subtotal</span><strong>R$ {{ cart.selected_subtotal }}</strong></div><div><span>Taxa padrão</span><strong>R$ {{ checkout_store.default_delivery_fee }}</strong></div><small>A taxa pode variar conforme a área de atendimento.</small>
+      <button class="btn btn-primary btn-lg w-100 mt-4">Finalizar pedido simulado</button><p class="secure-note">🔒 Nenhuma cobrança real será feita.</p>
+    </aside>
+  </form>
+</div></section>
+{% endblock %}

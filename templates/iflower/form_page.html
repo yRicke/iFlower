@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<section class="{% if account_section %}account-layout {% endif %}section">
+  <div class="container {% if account_section %}account-grid{% else %}form-container{% endif %}">
+    {% if account_section %}{% include 'iflower/partials/account_sidebar.html' %}{% endif %}
+    <div>
+      <span class="eyebrow">{{ eyebrow }}</span><h1>{{ title }}</h1>
+      <form method="post" enctype="multipart/form-data" class="form-grid panel mt-4 {% if form_layout == 'address' %}address-form-grid{% endif %}"{% if form_layout == 'address' %} data-address-form{% endif %}>
+        {% csrf_token %}{{ form.non_field_errors }}
+        {% for field in form %}<div class="{% if form_layout == 'address' and field.name == 'street' or form_layout == 'address' and field.name == 'complement' or form_layout == 'address' and field.name == 'reference' %}full{% endif %}"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="text-danger d-block">{{ error }}</small>{% endfor %}{% if form_layout == 'address' and field.name == 'postal_code' %}<small class="cep-feedback" data-cep-feedback aria-live="polite">Digite o CEP para preencher o endereço.</small>{% endif %}</div>{% endfor %}
+        <button class="btn btn-primary btn-lg">Salvar</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

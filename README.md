@@ -16,8 +16,9 @@ Demonstrar uma aplicação web de marketplace completa, responsiva e segura, sem
 - páginas detalhadas de loja e produto, com galeria e personalizações;
 - cadastro de cliente, login/logout e recuperação de senha pelo console;
 - perfil e endereços de entrega;
-- carrinho limitado a uma loja, seleção individual de itens, contador na navbar e confirmação antes da troca;
-- checkout atômico somente dos itens selecionados, com recálculo de preços, taxa e estoque no backend;
+- carrinho multi-loja agrupado por vendedor, seleção individual ou por loja e contador na navbar;
+- checkout atômico de uma loja por vez, preservando no carrinho os itens das demais lojas;
+- confirmação automática opcional por loja, ativa por padrão somente para agilizar o MVP;
 - preenchimento assistido de endereço por CEP e opção de exibir/ocultar senhas;
 - pedido com snapshot dos produtos e do endereço;
 - Pix, cartão e pagamento na entrega simulados, sem dados financeiros reais;
@@ -25,7 +26,7 @@ Demonstrar uma aplicação web de marketplace completa, responsiva e segura, sem
 - avaliação exclusiva para pedidos entregues e limitada a uma por pedido;
 - painel do vendedor com métricas, pedidos, produtos e edição da loja;
 - dashboard administrativo visual e Django Admin;
-- seed idempotente e 29 testes automatizados de fluxo e segurança;
+- seed idempotente e testes automatizados de fluxo e segurança;
 - páginas 404/500 personalizadas e interface responsiva.
 
 ## Tecnologias
@@ -58,7 +59,7 @@ iflower/
 └── views.py                 # páginas públicas e painéis
 templates/                   # base, componentes e páginas
 static/css/iflower.css       # identidade visual responsiva
-static/js/iflower.js         # confirmação de troca de loja
+static/js/iflower.js         # seleções do carrinho, senhas e preenchimento por CEP
 media/demo/                  # imagens demonstrativas locais
 ```
 
@@ -134,7 +135,7 @@ python manage.py check
 python manage.py test
 ```
 
-Os testes verificam cadastro e login, perfis, propriedade de loja/produto, carrinho de uma loja, seleção de itens, contador, subtotais, taxas, estoque, checkout parcial, snapshot, pagamento, limpeza seletiva do carrinho, transições válidas e inválidas, isolamento entre clientes/vendedores e regras de avaliação.
+Os testes verificam cadastro e login, perfis, propriedade de loja/produto, carrinho multi-loja, seleção de itens e lojas, contador, subtotais, taxas, estoque, checkout de uma loja por vez, confirmação automática opcional, snapshot, pagamento, limpeza seletiva do carrinho, transições válidas e inválidas, isolamento entre clientes/vendedores e regras de avaliação.
 
 ## Segurança implementada
 
@@ -159,6 +160,7 @@ As quatro imagens em `media/demo/` foram geradas especificamente para este proje
 - entrega, rastreamento, horários, taxas e áreas atendidas são simulados;
 - o estoque é demonstrativo e não possui reserva temporária;
 - cada vendedor administra uma única loja;
+- a confirmação automática de pedidos vem ativa no MVP; antes de uma versão de produção, o padrão deve ser revisto para exigir confirmação da loja;
 - não há cupons reais, geolocalização, notificações, mensageria ou integração externa;
 - Bootstrap é carregado por CDN; a lógica principal permanece funcional sem APIs externas;
 - o autocomplete usa o [ViaCEP](https://viacep.com.br/) após a digitação de um CEP válido; se o serviço estiver indisponível, todos os campos permanecem editáveis manualmente;

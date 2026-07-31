@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Gestão administrativa{% endblock %}
+{% block content %}
+<section class="dashboard-page">
+  <div class="container">
+    <div class="dashboard-head">
+      <div><span class="eyebrow">Administração iFlower</span><h1>Visão geral da plataforma</h1><p>Indicadores desta demonstração funcional.</p></div>
+      <a class="btn btn-dark" href="/admin/">Abrir Django Admin</a>
+    </div>
+    <div class="metric-grid">
+      <article><span>Total de usuários</span><strong>{{ total_users }}</strong></article>
+      <article><span>Clientes</span><strong>{{ user_count }}</strong></article>
+      <article><span>Vendedores</span><strong>{{ vendor_count }}</strong></article>
+      <article><span>Lojas</span><strong>{{ store_count }}</strong></article>
+      <article><span>Produtos</span><strong>{{ product_count }}</strong></article>
+      <article><span>Pedidos</span><strong>{{ order_count }}</strong></article>
+      <article><span>Volume simulado</span><strong>R$ {{ revenue }}</strong></article>
+    </div>
+    <div class="admin-grid mt-4">
+      <section class="panel"><h2>Pedidos por status</h2>{% for item in status_counts %}<div class="bar-row"><span>{{ item.label }}</span><div><i style="width: {{ item.percent }}%"></i></div><strong>{{ item.total }}</strong></div>{% endfor %}</section>
+      <section class="panel"><h2>Lojas mais avaliadas</h2>{% for store in top_stores %}<div class="ranking"><span>{{ forloop.counter }}</span><div class="grow"><strong>{{ store.name }}</strong><small>{{ store.review_count }} avaliações</small></div><b>★ {{ store.average_rating|floatformat:1 }}</b></div>{% endfor %}</section>
+      <section class="panel"><h2>Produtos mais pedidos</h2>{% for product in top_products %}<div class="ranking"><span>{{ forloop.counter }}</span><div class="grow"><strong>{{ product.items__product_name }}</strong></div><b>{{ product.quantity }} un.</b></div>{% endfor %}</section>
+    </div>
+    <section class="panel mt-4"><h2>Pedidos recentes</h2><div class="table-responsive"><table class="table"><thead><tr><th>Código</th><th>Loja</th><th>Cliente</th><th>Status</th><th>Total</th></tr></thead><tbody>{% for order in recent_orders %}<tr><td>{{ order.public_code }}</td><td>{{ order.store.name }}</td><td>{{ order.customer.email }}</td><td>{{ order.get_status_display }}</td><td>R$ {{ order.total }}</td></tr>{% endfor %}</tbody></table></div></section>
+  </div>
+</section>
+{% endblock %}

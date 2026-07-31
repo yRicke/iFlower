@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Meu perfil{% endblock %}
+{% block content %}<section class="account-layout section"><div class="container account-grid">{% include 'iflower/partials/account_sidebar.html' %}<div class="panel"><span class="eyebrow">Dados pessoais</span><h1>Seu perfil</h1><form method="post" class="form-grid mt-4">{% csrf_token %}{% for field in form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endfor %}<button class="btn btn-primary">Salvar alterações</button></form></div></div></section>{% endblock %}
