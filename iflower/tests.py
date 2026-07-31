@@ -365,14 +365,32 @@ class IFlowerFlowTests(TestCase):
         self.assertContains(response, 'Voltar para produtos')
         self.assertContains(response, f'href="{reverse("seller_product_list")}"', html=False)
         self.assertContains(response, 'Navegação do vendedor')
+        self.assertContains(response, 'class="seller-option-card"', count=2, html=False)
+        self.assertContains(response, 'data-image-upload', count=1)
+
+    def test_product_image_field_shows_current_image_and_clear_option(self):
+        self.product.image.name = 'products/current-product.jpg'
+        self.product.save(update_fields=['image'])
+        self.client.force_login(self.vendor)
+        response = self.client.get(reverse('seller_product_edit', args=[self.product.id]))
+        self.assertContains(response, self.product.image.url)
+        self.assertContains(response, 'Imagem atual')
+        self.assertContains(response, 'name="image-clear"', html=False)
 
     def test_store_page_uses_standard_seller_layout(self):
+        self.store.logo.name = 'stores/logos/current-logo.png'
+        self.store.cover.name = 'stores/covers/current-cover.png'
+        self.store.save(update_fields=['logo', 'cover'])
         self.client.force_login(self.vendor)
         response = self.client.get(reverse('seller_store_edit'))
         self.assertContains(response, 'class="dashboard-head"', html=False)
         self.assertContains(response, 'Navegação do vendedor')
         self.assertContains(response, 'Informações públicas')
         self.assertContains(response, f'href="{reverse("store_detail", args=[self.store.slug])}"', html=False)
+        self.assertContains(response, 'data-image-upload', count=2)
+        self.assertContains(response, 'Imagem atual', count=2)
+        self.assertContains(response, self.store.logo.url)
+        self.assertContains(response, self.store.cover.url)
 
     def test_vendor_creates_product_only_in_own_store(self):
         self.client.force_login(self.vendor)

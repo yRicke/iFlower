@@ -34,7 +34,85 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const addressForm = document.querySelector('[data-address-form]');
   if (addressForm) setupPostalCodeLookup(addressForm);
+
+  document.querySelectorAll('[data-image-upload]').forEach(setupImagePreview);
 });
+
+function setupImagePreview(container) {
+  const input = container.querySelector('[data-image-input]');
+  const preview = container.querySelector('[data-image-preview]');
+  const placeholder = container.querySelector('[data-image-placeholder]');
+  const badge = container.querySelector('[data-image-badge]');
+  const filename = container.querySelector('[data-image-filename]');
+  const feedback = container.querySelector('[data-image-feedback]');
+  const clear = container.querySelector('[data-image-clear]');
+  const originalSrc = preview.dataset.originalSrc;
+  let objectUrl = '';
+
+  const showImage = (src, label) => {
+    preview.src = src;
+    preview.hidden = false;
+    placeholder.hidden = true;
+    badge.textContent = label;
+  };
+
+  const showEmpty = (label = 'Sem imagem') => {
+    preview.removeAttribute('src');
+    preview.hidden = true;
+    placeholder.hidden = false;
+    badge.textContent = label;
+  };
+
+  const restoreOriginal = () => {
+    if (originalSrc) showImage(originalSrc, 'Imagem atual');
+    else showEmpty();
+    filename.textContent = 'Nenhum arquivo novo selecionado';
+    feedback.textContent = '';
+  };
+
+  input.addEventListener('change', () => {
+    const file = input.files && input.files[0];
+    if (!file) {
+      restoreOriginal();
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      input.value = '';
+      restoreOriginal();
+      feedback.textContent = 'Escolha um arquivo de imagem válido.';
+      feedback.dataset.state = 'error';
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      input.value = '';
+      restoreOriginal();
+      feedback.textContent = 'A imagem deve ter no máximo 5 MB.';
+      feedback.dataset.state = 'error';
+      return;
+    }
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = URL.createObjectURL(file);
+    showImage(objectUrl, 'Nova imagem');
+    filename.textContent = file.name;
+    feedback.textContent = `${(file.size / 1024 / 1024).toFixed(2)} MB • prévia pronta para salvar`;
+    feedback.dataset.state = 'success';
+    if (clear) clear.checked = false;
+  });
+
+  if (clear) {
+    clear.addEventListener('change', () => {
+      if (clear.checked) {
+        input.value = '';
+        showEmpty('Será removida');
+        filename.textContent = 'A imagem atual será removida';
+        feedback.textContent = 'Salve o formulário para confirmar a remoção.';
+        feedback.dataset.state = 'warning';
+      } else {
+        restoreOriginal();
+      }
+    });
+  }
+}
 
 function setupPostalCodeLookup(form) {
   const postalCode = form.querySelector('[name="postal_code"]');

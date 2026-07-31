@@ -29,14 +29,23 @@
         {% csrf_token %}
         {{ form.non_field_errors }}
         {% for field in form %}
-          <div class="{% if field.name == 'description' %}full{% endif %}">
-            {% if field.field.widget.input_type == 'checkbox' %}
-              <div class="form-check">{{ field }}<label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label></div>
+          <div class="{% if field.name == 'description' or field.name == 'logo' or field.name == 'cover' %}full{% endif %}{% if field.field.widget.input_type == 'checkbox' %} seller-option-field{% endif %}">
+            {% if field.name == 'logo' %}
+              {% include 'iflower/seller/partials/image_upload.html' with current_image=store.logo preview_alt=store.name variant='logo' %}
+            {% elif field.name == 'cover' %}
+              {% include 'iflower/seller/partials/image_upload.html' with current_image=store.cover preview_alt=store.name variant='cover' %}
+            {% elif field.field.widget.input_type == 'checkbox' %}
+              <label class="seller-option-card" for="{{ field.id_for_label }}">
+                {{ field }}
+                <span><strong>{{ field.label }}</strong><small>{{ field.help_text|default:'Ative ou desative esta configuração.' }}</small></span>
+              </label>
             {% else %}
               <label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}
             {% endif %}
-            {% if field.help_text %}<small class="form-help">{{ field.help_text|safe }}</small>{% endif %}
-            {% for error in field.errors %}<small class="text-danger d-block">{{ error }}</small>{% endfor %}
+            {% if field.name != 'logo' and field.name != 'cover' %}
+              {% if field.help_text and field.field.widget.input_type != 'checkbox' %}<small class="form-help">{{ field.help_text|safe }}</small>{% endif %}
+              {% for error in field.errors %}<small class="text-danger d-block">{{ error }}</small>{% endfor %}
+            {% endif %}
           </div>
         {% endfor %}
         <div class="seller-form-actions full">

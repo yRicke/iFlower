@@ -422,6 +422,7 @@ def seller_product_form(request, pk=None):
         return redirect('seller_product_list')
     return render(request, 'iflower/seller/form.html', {
         'form': form,
+        'product': product,
         'title': 'Editar produto' if pk else 'Novo produto',
         'subtitle': 'Atualize as informações do catálogo.' if pk else 'Cadastre um novo item no catálogo da sua loja.',
         'seller_section': 'products',

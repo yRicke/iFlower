@@ -1,0 +1,40 @@
+<div class="seller-media-upload seller-media-{{ variant|default:'product' }}" data-image-upload>
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  <div class="seller-media-layout">
+    <div class="seller-media-preview">
+      <img
+        src="{% if current_image %}{{ current_image.url }}{% endif %}"
+        alt="{% if current_image %}Prévia atual de {{ preview_alt }}{% else %}Prévia de {{ field.label|lower }}{% endif %}"
+        data-image-preview
+        data-original-src="{% if current_image %}{{ current_image.url }}{% endif %}"
+        {% if not current_image %}hidden{% endif %}
+      >
+      <div class="seller-media-placeholder" data-image-placeholder {% if current_image %}hidden{% endif %}>
+        <span aria-hidden="true">▧</span>
+        <small>A prévia aparecerá aqui</small>
+      </div>
+      <span class="seller-media-badge" data-image-badge>{% if current_image %}Imagem atual{% else %}Sem imagem{% endif %}</span>
+    </div>
+    <div class="seller-media-controls">
+      <p>Envie JPG, PNG ou WebP de até 5 MB. Confira o enquadramento antes de salvar.</p>
+      <label class="btn btn-soft seller-file-button" for="{{ field.id_for_label }}">Escolher imagem</label>
+      <input
+        class="visually-hidden"
+        type="file"
+        name="{{ field.html_name }}"
+        id="{{ field.id_for_label }}"
+        accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+        data-image-input
+      >
+      <span class="seller-media-filename" data-image-filename>Nenhum arquivo novo selecionado</span>
+      {% if current_image %}
+        <div class="form-check seller-image-clear">
+          <input class="form-check-input" type="checkbox" name="{{ field.html_name }}-clear" id="{{ field.id_for_label }}_clear" data-image-clear>
+          <label class="form-check-label" for="{{ field.id_for_label }}_clear">Remover imagem atual ao salvar</label>
+        </div>
+      {% endif %}
+      <small class="seller-media-feedback" data-image-feedback aria-live="polite"></small>
+      {% for error in field.errors %}<small class="text-danger d-block">{{ error }}</small>{% endfor %}
+    </div>
+  </div>
+</div>

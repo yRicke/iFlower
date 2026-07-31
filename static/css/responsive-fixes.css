@@ -670,6 +670,182 @@ body {
   padding: .35rem .5rem;
 }
 
+.seller-option-field {
+  display: flex;
+}
+
+.seller-option-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+  min-height: 92px;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  background: var(--cloud);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  transition: border-color 200ms ease, background-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+
+.seller-option-card:hover,
+.seller-option-card:has(input:focus-visible) {
+  background: #fff;
+  border-color: #d9b9c2;
+  box-shadow: 0 8px 22px rgba(66, 40, 48, .07);
+  transform: translateY(-1px);
+}
+
+.seller-option-card > input {
+  order: 2;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin: 0;
+}
+
+.seller-option-card > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.seller-option-card strong {
+  color: var(--ink);
+  font-size: .92rem;
+}
+
+.seller-option-card small {
+  margin-top: .2rem;
+  color: var(--muted);
+  font-size: .76rem;
+  font-weight: 500;
+}
+
+.seller-media-upload > label {
+  margin-bottom: .55rem;
+}
+
+.seller-media-layout {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: stretch;
+  padding: 1rem;
+  background: var(--cloud);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.seller-media-preview {
+  position: relative;
+  min-height: 170px;
+  overflow: hidden;
+  background: var(--rose-light);
+  border: 1px dashed #d7c4ca;
+  border-radius: 16px;
+}
+
+.seller-media-logo .seller-media-preview {
+  width: 170px;
+  min-height: 170px;
+}
+
+.seller-media-cover .seller-media-layout {
+  grid-template-columns: 310px minmax(0, 1fr);
+}
+
+.seller-media-preview > img {
+  width: 100%;
+  height: 100%;
+  min-height: 170px;
+  object-fit: cover;
+}
+
+.seller-media-logo .seller-media-preview > img {
+  aspect-ratio: 1;
+}
+
+.seller-media-placeholder {
+  display: grid;
+  min-height: 170px;
+  padding: 1rem;
+  color: var(--muted);
+  text-align: center;
+  place-content: center;
+}
+
+.seller-media-placeholder[hidden],
+.seller-media-preview > img[hidden] {
+  display: none;
+}
+
+.seller-media-placeholder span {
+  color: var(--rose);
+  font-size: 2.1rem;
+}
+
+.seller-media-placeholder small {
+  display: block;
+  margin-top: .35rem;
+}
+
+.seller-media-badge {
+  position: absolute;
+  top: .7rem;
+  left: .7rem;
+  padding: .3rem .6rem;
+  color: var(--rose-dark);
+  font-size: .68rem;
+  font-weight: 800;
+  background: rgba(255, 255, 255, .92);
+  border-radius: 100px;
+  box-shadow: 0 4px 12px rgba(66, 40, 48, .08);
+}
+
+.seller-media-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 0;
+}
+
+.seller-media-controls > p {
+  max-width: 520px;
+  margin: 0 0 .8rem;
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+.seller-file-button {
+  margin: 0;
+}
+
+.seller-media-filename {
+  max-width: 100%;
+  margin-top: .6rem;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: .78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.seller-image-clear {
+  margin-top: .85rem;
+}
+
+.seller-media-feedback {
+  min-height: 1.2rem;
+  margin-top: .45rem;
+  color: var(--muted);
+  font-size: .75rem;
+}
+
+.seller-media-feedback[data-state='success'] { color: var(--sage); }
+.seller-media-feedback[data-state='warning'] { color: #87621b; }
+.seller-media-feedback[data-state='error'] { color: #9a3d3d; }
+
 @media (max-width: 1199px) {
   .filter-products {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -792,6 +968,11 @@ body {
     width: 100%;
     padding-left: 2.4rem;
   }
+
+  .seller-media-layout,
+  .seller-media-cover .seller-media-layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 420px) {
@@ -810,6 +991,15 @@ body {
   }
 
   .seller-form-actions .btn {
+    width: 100%;
+  }
+
+  .seller-media-layout,
+  .seller-media-cover .seller-media-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .seller-media-logo .seller-media-preview {
     width: 100%;
   }
 }
